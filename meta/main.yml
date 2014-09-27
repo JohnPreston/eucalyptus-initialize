@@ -16,4 +16,6 @@ galaxy_info:
   - cloud:ec2
   - clustering
   - system
-dependencies: []
+dependencies:
+ - JohnPreston.eucalyptus-network
+ - JohnPreston.eucalyptus-setup
