@@ -1,0 +1,38 @@
+---
+# CC INIT
+
+- name: Generate ssh-key on CC
+  user: generate_ssh_key=yes ssh_key_bits=4096 ssh_key_passphrase= name=root
+  register: cc_public_key
+  tags:
+  - config
+  - cc
+  - cc_keys
+
+- name: Deploy CC ssh key
+  authorized_key: user=root state=present key="{{ cc_public_key.ssh_public_key }}"
+  tags:
+  - config
+  - cc
+  - cc_keys
+
+- name: Config CC ssh config
+  copy: src=ssh_config dest=/root/.ssh/config
+  tags:
+  - config
+  - cc
+
+- name: Import CC(s) public key
+  fetch: src=/root/.ssh/id_rsa.pub dest="/var/tmp/cc-{{ hostvars[item]['partition'] }}" flat=yes
+  with_items: "{{ groups.cc }}"
+  tags:
+  - config
+  - cc
+  - cc_keys
+
+- name: Authorize CLC SSH Key
+  authorized_key: user=root key="{{ lookup('file', '/var/tmp/clc-pub-key') }}"
+  tags:
+  - config
+  - cc
+  - clc_keys

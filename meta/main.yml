@@ -1,0 +1,19 @@
+---
+galaxy_info:
+  author: John Mille
+  description: Initialize all Eucalyptus components to get ready for configuration and registration
+  company: Eucalyptus
+  min_ansible_version: 1.6
+  platforms:
+  - name: RHEL
+    versions:
+    - 6
+  - name: CentOS
+    versions:
+    - 6
+  categories:
+  - cloud
+  - cloud:ec2
+  - clustering
+  - system
+dependencies: []

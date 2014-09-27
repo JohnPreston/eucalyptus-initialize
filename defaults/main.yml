@@ -1,0 +1,4 @@
+---
+# defaults file for eucalyptus-initialize
+
+euca_db_path: /var/lib/eucalyptus/db/data

@@ -1,0 +1,26 @@
+---
+# tasks file for eucalyptus-initialize
+
+- include: init-clc.yml
+  when:
+  - inventory_hostname in groups.clc
+
+- include: init-ufs.yml
+  when:
+  - inventory_hostname in groups.ufs
+
+- include: init-walrus.yml
+  when:
+  - inventory_hostname in groups.walrus
+
+- include: init-cc.yml
+  when:
+  - inventory_hostname in groups.cc
+
+- include: init-sc.yml
+  when:
+  - inventory_hostname in groups.sc
+
+- include: init-nc.yml
+  when:
+  - inventory_hostname in groups.nc

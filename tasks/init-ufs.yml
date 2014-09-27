@@ -1,0 +1,9 @@
+---
+# UFS Init
+
+- name: Authorize CLC SSH Key
+  authorized_key: user=root key="{{ lookup('file', '/var/tmp/clc-pub-key') }}"
+  tags:
+  - config
+  - ufs
+  - clc_keys

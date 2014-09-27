@@ -1,0 +1,22 @@
+---
+# Cloud initialization process
+
+- name: Check if Eucalyptus has been initialized
+  stat: path={{ euca_db_path }}
+  register: db_stat
+  tags:
+  - init_cloud
+  - clc
+
+- name: Initialize Eucalyptus CLC
+  shell: euca_conf --initialize
+  when: db_stat.stat.exists == False
+  tags:
+  - clc
+  - init_cloud
+
+- name: Start the CLC service
+  service: name=eucalyptus-cloud state=started
+  tags:
+  - clc
+  - run
