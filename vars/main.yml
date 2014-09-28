@@ -1,6 +1,3 @@
 ---
 # vars file for eucalyptus-initialize
 
-euca_db_path: /var/lib/eucalyptus/db/data
-networking_mode: EDGE
-use_vlans: true

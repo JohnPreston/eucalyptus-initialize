@@ -1,6 +1,8 @@
 ---
 # tasks file for eucalyptus-initialize
 
+- include: init-config.yml
+
 - include: init-clc.yml
   when:
   - inventory_hostname in groups.clc
