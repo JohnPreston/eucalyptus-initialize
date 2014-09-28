@@ -27,6 +27,8 @@ This variable MUST NOT BE CHANGED if you are not an Eucalyptus engineer
 | Name | Default | Description | Note
 |--- |--- |--- |---
 | euca_db_path | /var/lib/eucalyptus/db/data | Eucalyptus CLC Database directory | DO NOT CHANGE
+| networking_mode | None | Eucalyptus networking mode | Must be the same for all roles
+| use_vlans| true | Eucalyptus using VLANs for instances traffic | None
 
 Dependencies
 ------------
@@ -60,6 +62,9 @@ Example Playbook
 - hosts: all
   roles:
   - JohnPreston.eucalyptus-initialize
+  vars:
+  - networking_mode: MANAGED
+  - use_vlans: false
 
 ```
 
