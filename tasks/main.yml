@@ -2,27 +2,41 @@
 # tasks file for eucalyptus-initialize
 
 - include: init-config.yml
+  tags:
+  - initialization
 
 - include: init-clc.yml
   when:
   - inventory_hostname in groups.clc
+  tags:
+  - initialization
 
 - include: init-ufs.yml
   when:
   - inventory_hostname in groups.ufs
+  tags:
+  - initialization
 
 - include: init-walrus.yml
   when:
   - inventory_hostname in groups.walrus
+  tags:
+  - initialization
 
 - include: init-cc.yml
   when:
   - inventory_hostname in groups.cc
+  tags:
+  - initialization
 
 - include: init-sc.yml
   when:
   - inventory_hostname in groups.sc
+  tags:
+  - initialization
 
 - include: init-nc.yml
   when:
   - inventory_hostname in groups.nc
+  tags:
+  - initialization

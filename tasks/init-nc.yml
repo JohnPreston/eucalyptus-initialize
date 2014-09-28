@@ -4,25 +4,25 @@
 - name: Authorize CC SSH Key
   authorized_key: user=root key="{{ lookup('file', '/var/tmp/cc-' + hostvars[inventory_hostname]['partition']) }}"
   tags:
-  - config
-  - cc_keys
-  - nc
+  - initialization
+  - clc_keys
 
 - name: Start libvirtd
   service: name=libvirtd state=started
   tags:
   - nc_cleanup
-  - nc
+
 
 - name: Delete default libvirt network
   shell: virsh net-destroy default ; virsh net-undefine default
   ignore_errors: yes
   tags:
+  - initialization
   - nc_cleanup
-  - nc
+
 
 - name: Restart libvirtd
   service: name=libvirtd state=restarted
   tags:
+  - initialization
   - nc_cleanup
-  - nc

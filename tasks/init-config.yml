@@ -5,7 +5,8 @@
   shell: echo "{{ ansible_processor_vcpus }} * {{ cpu_overcommit }}" | bc
   register: nc_vcpu
   tags:
-  - init_config
+  - initialization
+  - euca_conf_file
   - overcommit
   when:
   - inventory_hostname in "{{ groups.nc }}"
@@ -13,4 +14,5 @@
 - name: configure eucalyptus.conf
   template: src=eucalyptus.conf.j2 dest=/etc/eucalyptus/eucalyptus.conf
   tags:
-  - init_config
+  - initialization
+  - euca_conf_file

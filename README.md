@@ -12,22 +12,25 @@ Requirements
 hosts:
 
 - clc | Cloud Controller
+
 - ufs | User Facing Services
+
 - cc | Cluster Controllers
+
 - sc | Storage Controllers
+
 - nc | Node Controllers
+
 - walrus | S3 builtin-backend
 
 
 Role Variables
 --------------
 
-This variable MUST NOT BE CHANGED if you are not an Eucalyptus engineer
-
 | Name | Default | Description | Note
 |--- |--- |--- |---
 | cpu_overcommit | 1 | Defines the factor of overcommitting for Compute nodes | None
-| networking_mode | None | Eucalyptus networking mode | Must be the same for all roles
+| networking_mode | MANAGED-NOVLAN | Eucalyptus networking mode | Must be the same for all roles
 | use_vlans| true | Eucalyptus using VLANs for instances traffic | None
 | managed_addrpernet | 32 | Number of IP addresses per security group | MANAGED modes only
 | managed_max_vlan | 4096 | Max VLAN TAG usable for Security groups | MANAGED only
@@ -37,6 +40,8 @@ This variable MUST NOT BE CHANGED if you are not an Eucalyptus engineer
 | pub_ips | [""] | List of IP addresses used for public traffic of instances | Can be ranges or single address
 | clusters | {} | Object which contains informations about each AZ (1/CC) | Change values to yours
 | vlan_routes | [] | List of subnets to be added to the system for a multi-cluster / multi-vlan | Advanced users only
+| edge_using_private | true | Makes the cloud use instances private IPs to reach cloud services | None
+| edge_network_config_file |  /tmp/network.json | EDGE JSON configuration file for location | If you change it make sure you do it for each steps
 
 
 Dependencies
@@ -55,11 +60,19 @@ Before running this role, you will need
 Example Playbook
 ----------------
 
+The role by itself :
+
 ```
-##############################################################
-#
-# Networking has to be configured first in case of any change
-#
+
+- hosts: all
+  roles:
+  - JohnPreston.eucalyptus-initialize
+
+```
+
+The role in a playbook :
+
+```
 
 - hosts: all
   roles:

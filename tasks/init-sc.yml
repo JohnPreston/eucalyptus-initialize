@@ -4,6 +4,6 @@
 - name: Authorize CLC SSH Key
   authorized_key: user=root key="{{ lookup('file', '/var/tmp/clc-pub-key') }}"
   tags:
-  - config
-  - ufs
+  tags:
+  - initialization
   - clc_keys

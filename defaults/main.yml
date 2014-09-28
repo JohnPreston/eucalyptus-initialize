@@ -4,16 +4,17 @@ euca_db_path: /var/lib/eucalyptus/db/data
 
 cpu_overcommit: 1
 
-networking_mode: EDGE
+networking_mode: MANAGED-NOVLAN
 
-use_vlans: true
+use_vlans: false
 edge_using_private: true
+edge_network_config_file: /tmp/network.json
 
 managed_addrpernet: 32
-managed_max_vlan: 1010
-managed_min_vlan: 1000
+managed_max_vlan: 4096
+managed_min_vlan: 1
 
-instance_dns_domain: emea.lan
+instance_dns_domain: eucalyptus.internal
 instance_dns_servers: 
 - 8.8.8.8
 

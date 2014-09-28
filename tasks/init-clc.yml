@@ -5,18 +5,28 @@
   stat: path={{ euca_db_path }}
   register: db_stat
   tags:
-  - init_cloud
+  - initialization
+  - init_clc
   - clc
+
+- name: create the EDGE config
+  template: src=network.json.j2 dest="{{ edge_network_config_file }}"
+  tags:
+  - initialization
+  - configure
+  when:
+  - networking_mode == "EDGE"
 
 - name: Initialize Eucalyptus CLC
   shell: euca_conf --initialize
   when: db_stat.stat.exists == False
   tags:
+  - initialization
   - clc
-  - init_cloud
+  - init_clc
 
 - name: Start the CLC service
   service: name=eucalyptus-cloud state=started
   tags:
-  - clc
-  - run
+  - initialization
+  - init_clc
