@@ -1,6 +1,32 @@
 ---
 # Cloud initialization process
 
+
+- name: Generate ssh-key on CLC
+  user: generate_ssh_key=yes ssh_key_bits=4096 ssh_key_passphrase= name=root
+  register: clc_public_key
+  tags:
+  - clc
+  - config
+
+- name: Deploy CLC public_key
+  authorized_key: user=root state=present key="{{ clc_public_key.ssh_public_key }}"
+  tags:
+  - clc
+  - config
+
+- name: Config CLC ssh config
+  copy: src=ssh_config dest=/root/.ssh/config
+  tags:
+  - clc
+  - config
+
+- name: Getting CLC public key
+  fetch: src=/root/.ssh/id_rsa.pub dest=/var/tmp/clc-pub-key flat=yes
+  tags:
+  - clc
+  - config
+
 - name: Check if Eucalyptus has been initialized
   stat: path={{ euca_db_path }}
   register: db_stat
