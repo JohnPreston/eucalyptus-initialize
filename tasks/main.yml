@@ -40,3 +40,18 @@
   - inventory_hostname in groups.nc
   tags:
   - initialization
+
+- name: Compiling UFS JAVA bindings
+  service: name=eucalyptus-cloud state=started
+  when:
+  - inventory_hostname in groups.ufs
+
+- name: Compiling Walrus JAVA bindings
+  service: name=eucalyptus-cloud state=started
+  when:
+  - inventory_hostname in groups.walrus
+
+- name: Compiling SC JAVA bindings
+  service: name=eucalyptus-cloud state=started
+  when:
+  - inventory_hostname in groups.sc

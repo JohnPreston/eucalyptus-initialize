@@ -101,7 +101,7 @@ USE_VIRTIO_NET="1"
 # to instances.  The default value of 0 allows Eucalyptus to use all
 # CPU cores on the system.
 {% if inventory_hostname in groups['nc'] %}
-MAX_CORES="{{  nc_vcpu.stdout }}"
+MAX_CORES="{{ ansible_processor_vcpus * cpu_overcommit }}"
 {% else %}
 #MAX_CORES="0"
 {% endif %}

@@ -35,14 +35,6 @@
   - init_clc
   - clc
 
-- name: create the EDGE config
-  template: src=network.json.j2 dest="{{ edge_network_config_file }}"
-  tags:
-  - initialization
-  - configure
-  when:
-  - networking_mode == "EDGE"
-
 - name: Initialize Eucalyptus CLC
   shell: euca_conf --initialize
   when: db_stat.stat.exists == False
