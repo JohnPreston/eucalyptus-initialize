@@ -2,17 +2,17 @@
 # NCs init
 
 - name: Set NC IFACE | Using VLANs
-  set_fact: nc_iface="{{ hostvars[item]['ansible_' + "%s%d"|format(hostvars[item]['bridge_prefix'], hostvars[item]['vlan_tag'])] }}"
+  set_fact: nc_iface="{{ 'ansible_' + "%s%d"|format(hostvars[item]['bridge_prefix'], hostvars[item]['vlan_tag']) }}"
   with_items:
   - "{{ groups.nc }}"
   when:
-  - not use_vlans
+  - use_vlans
   - networking_mode == "EDGE" or networking_mode == "MANAGED-NOVLAN"
   tags:
   - initialization
 
 - name: Set NC IFACE | Not Using VLANs
-  set_fact: nc_iface="{{ hostvars[item]['ansible_' + "%s%d"|format(hostvars[item]['bridge_prefix'], hostvars[item]['bridge_id'])] }}"
+  set_fact: nc_iface="{{ 'ansible_' + "%s%d"|format(hostvars[item]['bridge_prefix'], hostvars[item]['bridge_id']) }}"
   with_items:
   - "{{ groups.nc }}"
   when:
@@ -22,7 +22,7 @@
   - initialization
 
 - name: Set NC IFACE | MANAGED
-  set_fact: nc_iface="{{ hostvars[item]['ansible_' + "%s"|format(hostvars[item]['vnet_private'])] }}"
+  set_fact: nc_iface="{{ 'ansible_' + "%s"|format(hostvars[item]['vnet_private']) }}"
   with_items:
   - "{{ groups.nc }}"
   when:

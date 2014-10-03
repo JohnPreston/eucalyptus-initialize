@@ -4,16 +4,20 @@
 #
 
 - name: Set JAVA IFACE | No VLAN
-  set_fact: java_iface="{{  hostvars[item]['ansible_' + hostvars[item]['vnet_java']] }}"
+  set_fact: java_iface="{{  'ansible_' + hostvars[item]['vnet_java'] }}"
+  with_items:
+  - "{{ groups.java_fe }}"
   when:
   - not use_vlans
   tags:
   - initialization
 
 - name: Set JAVA IFACE | VLAN
-  set_fact: java_iface="{{ hostvars[item]['ansible_' + "%s.%d"|format(hostvars[item]['vnet_java'], hostvars[item]['vlan_tag'])] }}"
+  set_fact: java_iface="{{ 'ansible_' + "%s.%d"|format(hostvars[item]['vnet_java'], hostvars[item]['vlan_tag']) }}"
+  with_items:
+  - "{{ groups.java_fe }}"
   when:
-  - not use_vlans
+  - use_vlans
   tags:
   - initialization
 

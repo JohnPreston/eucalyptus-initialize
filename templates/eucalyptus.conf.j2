@@ -11,7 +11,7 @@ EUCA_USER="eucalyptus"
 # Extra options to pass to the eucalyptus-cloud process, such as log
 # levels, heap size, or other JVM flags.
 {% if inventory_hostname in groups['java_fe'] %}
-CLOUD_OPTS="--bind-addr={{  hostvars[inventory_hostname]['ansible_' + java_iface]['ipv4']['address'] }}"
+CLOUD_OPTS="--bind-addr={{ hostvars[inventory_hostname][hostvars[inventory_hostname]['java_iface']]['ipv4']['address'] }}"
 {% else %}
 CLOUD_OPTS=""
 {% endif %}
@@ -317,14 +317,8 @@ VNET_DOMAINNAME="{{ instance_dns_domain }}"
 # if layer 2 tunneling between CCs does not work.  It is not normally
 # necessary to change this setting.
 # Networking modes: Managed, Managed (No VLAN)
-{% if networking_mode == 'MANAGED' %}
-{% if groups == 'cc' %}
-{% set vnet_tunn = 'ansible_' + cc_vnet_tunn %}
-VNET_LOCALIP="{{ vnet_tunn.ipv4.address }}"
-{% endif %}
-{% else %}
 #VNET_LOCALIP="your-public-interface's-ip"
-{% endif %}
+
 
 # The ISC DHCP server executable to use.  The default is
 # "/usr/sbin/dhcpd3".

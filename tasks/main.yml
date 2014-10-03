@@ -25,6 +25,29 @@
   tags:
   - initialization
 
+- name: Debug JAVA iface
+  debug: msg="{{ hostvars[item][hostvars[item]['java_iface']]['ipv4']['address'] }}"
+  with_items:
+  - "{{ groups.java_fe }}"
+  when:
+  - inventory_hostname in groups.java_fe
+
+
+- name: Debug CC iface
+  debug: msg="{{ hostvars[item][hostvars[item]['cc_iface']]['ipv4']['address'] }}"
+  with_items:
+  - "{{ groups.cc }}"
+  when:
+  - inventory_hostname in groups.cc
+
+- name: Debug NC iface
+  debug: msg="{{ hostvars[item][hostvars[item]['nc_iface']]['ipv4']['address'] }}"
+  with_items:
+  - "{{ groups.nc }}"
+  when:
+  - inventory_hostname in groups.nc
+
+
 - include: init-config.yml
   tags:
   - initialization

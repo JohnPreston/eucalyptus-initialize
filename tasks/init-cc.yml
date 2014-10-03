@@ -2,18 +2,20 @@
 # CC INIT
 
 - name: Set CC IFACE | No VLAN
-  set_fact: cc_iface="{{ hostvars[item]['ansible_' + hostvars[item]['vnet_public']]  }}"
+  set_fact: cc_iface="{{ 'ansible_' + hostvars[item]['vnet_public']  }}"
+  with_items:
+  - "{{ groups.cc }}"
   when:
   - not use_vlans
-  - networking_mode == "EDGE"
   tags:
   - initialization
 
 - name: Set CC IFACE | VLAN
-  set_fact: cc_iface="{{  hostvars[item]['ansible_' + "%s.%d"|format(hostvars[item]['vnet_public'],  hostvars[item]['vlan_tag'])]  }}"
+  set_fact: cc_iface="{{  'ansible_' + "%s.%d"|format(hostvars[item]['vnet_public'],  hostvars[item]['vlan_tag'])  }}"
+  with_items:
+  - "{{ groups.cc }}"
   when:
   - use_vlans
-  - networking_mode == "MANAGED-NOVLAN"
   tags:
   - initialization
 
