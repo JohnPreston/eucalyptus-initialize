@@ -1,6 +1,36 @@
 ---
 # NCs init
 
+- name: Set NC IFACE | Using VLANs
+  set_fact: nc_iface="{{ hostvars[item]['ansible_' + "%s%d"|format(hostvars[item]['bridge_prefix'], hostvars[item]['vlan_tag'])] }}"
+  with_items:
+  - "{{ groups.nc }}"
+  when:
+  - not use_vlans
+  - networking_mode == "EDGE" or networking_mode == "MANAGED-NOVLAN"
+  tags:
+  - initialization
+
+- name: Set NC IFACE | Not Using VLANs
+  set_fact: nc_iface="{{ hostvars[item]['ansible_' + "%s%d"|format(hostvars[item]['bridge_prefix'], hostvars[item]['bridge_id'])] }}"
+  with_items:
+  - "{{ groups.nc }}"
+  when:
+  - not use_vlans
+  - networking_mode == "EDGE" or networking_mode == "MANAGED-NOVLAN"
+  tags:
+  - initialization
+
+- name: Set NC IFACE | MANAGED
+  set_fact: nc_iface="{{ hostvars[item]['ansible_' + "%s"|format(hostvars[item]['vnet_private'])] }}"
+  with_items:
+  - "{{ groups.nc }}"
+  when:
+  - not use_vlans
+  - networking_mode == "MANAGED"
+  tags:
+  - initialization
+
 - name: Authorize CC SSH Key
   authorized_key: user=root key="{{ lookup('file', '/var/tmp/cc-' + hostvars[inventory_hostname]['partition']) }}"
   tags:

@@ -1,9 +1,0 @@
----
-# SC init
-
-- name: Authorize CLC SSH Key
-  authorized_key: user=root key="{{ lookup('file', '/var/tmp/clc-pub-key') }}"
-  tags:
-  tags:
-  - initialization
-  - clc_keys

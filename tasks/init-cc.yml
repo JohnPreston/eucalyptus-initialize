@@ -1,6 +1,22 @@
 ---
 # CC INIT
 
+- name: Set CC IFACE | No VLAN
+  set_fact: cc_iface="{{ hostvars[item]['ansible_' + hostvars[item]['vnet_public']]  }}"
+  when:
+  - not use_vlans
+  - networking_mode == "EDGE"
+  tags:
+  - initialization
+
+- name: Set CC IFACE | VLAN
+  set_fact: cc_iface="{{  hostvars[item]['ansible_' + "%s.%d"|format(hostvars[item]['vnet_public'],  hostvars[item]['vlan_tag'])]  }}"
+  when:
+  - use_vlans
+  - networking_mode == "MANAGED-NOVLAN"
+  tags:
+  - initialization
+
 - name: Generate ssh-key on CC
   user: generate_ssh_key=yes ssh_key_bits=4096 ssh_key_passphrase= name=root
   register: cc_public_key

@@ -1,5 +1,7 @@
----
-# Walrus Init
+################################################################################
+#
+# JAVA Front-Ends
+#
 
 - name: Set JAVA IFACE | No VLAN
   set_fact: java_iface="{{  hostvars[item]['ansible_' + hostvars[item]['vnet_java']] }}"
