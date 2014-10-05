@@ -22,8 +22,16 @@
   - clc
   - config
 
-- name: Getting CLC public key
+- name: Getting CLC public key to Ansible host
   fetch: src=/root/.ssh/id_rsa.pub dest=/var/tmp/clc-pub-key flat=yes
   tags:
   - clc
   - config
+
+- name: create the EDGE config
+  template: src=network.json.j2 dest="{{ edge_network_config_file }}"
+  tags:
+  - initialization
+  - configure
+  when:
+  - networking_mode == "EDGE"

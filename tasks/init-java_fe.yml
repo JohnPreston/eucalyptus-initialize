@@ -4,11 +4,26 @@
 #
 
 - name: Set JAVA IFACE | No VLAN
-  set_fact: java_iface="{{  'ansible_' + hostvars[item]['vnet_java'] }}"
+  set_fact: java_iface="{{ 'ansible_' + hostvars[item]['vnet_java'] }}"
   with_items:
   - "{{ groups.java_fe }}"
   when:
+  - inventory_hostname == "{{ item }}"
+  - not inventory_hostname in groups.sc
   - not use_vlans
+  tags:
+  - initialization
+
+- name: Set JAVA IFACE | SC | NOVLAN
+  set_fact: java_iface="{{ 'ansible_' + hostvars[item]['vnet_java'] }}"
+  with_items:
+  - "{{ groups.sc }}"
+  when:
+  - not use_vlans
+  - inventory_hostname in groups.sc
+  - not inventory_hostname in groups.java_fe
+  - inventory_hostname == "{{ item }}"
+  - partition == "{{ hostvars[item]['partition'] }}"
   tags:
   - initialization
 
@@ -18,6 +33,20 @@
   - "{{ groups.java_fe }}"
   when:
   - use_vlans
+  - inventory_hostname == "{{ item }}"
+  - not inventory_hostname in groups.sc
+  tags:
+  - initialization
+
+- name: Set JAVA IFACE | SC | VLAN
+  set_fact: java_iface="{{ 'ansible_' + "%s.%d"|format(hostvars[item]['vnet_java'], hostvars[item]['vlan_tag']) }}"
+  with_items:
+  - "{{ groups.sc }}"
+  when:
+  - use_vlans
+  - inventory_hostname == "{{ item }}"
+  - inventory_hostname in groups.sc
+  - partition == "{{ hostvars[item]['partition'] }}"
   tags:
   - initialization
 

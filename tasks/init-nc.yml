@@ -8,6 +8,8 @@
   when:
   - use_vlans
   - networking_mode == "EDGE" or networking_mode == "MANAGED-NOVLAN"
+  - partition == "{{ hostvars[item]['partition'] }}"
+  - inventory_hostname == "{{ item }}"
   tags:
   - initialization
 
@@ -18,6 +20,8 @@
   when:
   - not use_vlans
   - networking_mode == "EDGE" or networking_mode == "MANAGED-NOVLAN"
+  - partition == "{{ hostvars[item]['partition'] }}"
+  - inventory_hostname == "{{ item }}"
   tags:
   - initialization
 
@@ -28,6 +32,8 @@
   when:
   - not use_vlans
   - networking_mode == "MANAGED"
+  - partition == "{{ hostvars[item]['partition'] }}"
+  - inventory_hostname == "{{ item }}"
   tags:
   - initialization
 
@@ -42,14 +48,12 @@
   tags:
   - nc_cleanup
 
-
 - name: Delete default libvirt network
   shell: virsh net-destroy default ; virsh net-undefine default
   ignore_errors: yes
   tags:
   - initialization
   - nc_cleanup
-
 
 - name: Restart libvirtd
   service: name=libvirtd state=restarted

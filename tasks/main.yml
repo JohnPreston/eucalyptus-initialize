@@ -31,7 +31,17 @@
   - "{{ groups.java_fe }}"
   when:
   - inventory_hostname in groups.java_fe
+  - not inventory_hostname in groups.sc
+  - inventory_hostname == "{{ item }}"
 
+- name: Debug SC JAVA iface
+  debug: msg="{{ hostvars[item][hostvars[item]['java_iface']]['ipv4']['address'] }}"
+  with_items:
+  - "{{ groups.java_fe }}"
+  when:
+  - inventory_hostname in groups.sc
+  - not inventory_hostname in groups.java_fe
+  - inventory_hostname == "{{ item }}"
 
 - name: Debug CC iface
   debug: msg="{{ hostvars[item][hostvars[item]['cc_iface']]['ipv4']['address'] }}"
@@ -39,6 +49,7 @@
   - "{{ groups.cc }}"
   when:
   - inventory_hostname in groups.cc
+  - inventory_hostname == "{{ item }}"
 
 - name: Debug NC iface
   debug: msg="{{ hostvars[item][hostvars[item]['nc_iface']]['ipv4']['address'] }}"
@@ -46,7 +57,7 @@
   - "{{ groups.nc }}"
   when:
   - inventory_hostname in groups.nc
-
+  - inventory_hostname == "{{ item }}"
 
 - include: init-config.yml
   tags:

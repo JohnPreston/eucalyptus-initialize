@@ -1,5 +1,7 @@
----
+################################################################################
+#
 # INIT Eucalyptus configuration file
+#
 
 - name: configure eucalyptus.conf
   template: src=eucalyptus.conf.j2 dest=/etc/eucalyptus/eucalyptus.conf

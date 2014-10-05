@@ -7,6 +7,7 @@
   - "{{ groups.cc }}"
   when:
   - not use_vlans
+  - inventory_hostname == "{{ item }}"
   tags:
   - initialization
 
@@ -16,6 +17,7 @@
   - "{{ groups.cc }}"
   when:
   - use_vlans
+  - inventory_hostname == "{{ item }}"
   tags:
   - initialization
 
@@ -26,27 +28,29 @@
   - initialization
   - cc_keys
 
-- name: Deploy CC ssh key
+- name: Deploy CC ssh key on CC
   authorized_key: user=root state=present key="{{ cc_public_key.ssh_public_key }}"
   tags:
   - initialization
   - cc_keys
 
-- name: Config CC ssh config
+- name: Config CC ssh config on CC
   copy: src=ssh_config dest=/root/.ssh/config
   tags:
   - initialization
   - config
 
-- name: Import CC(s) public key
+- name: Import CC(s) public key on ansible machine
   fetch: src=/root/.ssh/id_rsa.pub dest="/var/tmp/cc-{{ hostvars[item]['partition'] }}" flat=yes
+  when:
+  - partition == "{{ hostvars[item]['partition'] }}"
   with_items: "{{ groups.cc }}"
   tags:
   - initialization
   - config
   - cc_keys
 
-- name: Authorize CLC SSH Key
+- name: Authorize CLC SSH Key on CC
   authorized_key: user=root key="{{ lookup('file', '/var/tmp/clc-pub-key') }}"
   tags:
   - initialization
