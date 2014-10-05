@@ -1,15 +1,30 @@
 ---
 # tasks file for eucalyptus-initialize
 
-- include: init-clc.yml
+- name: Init CLC
+  include: init-clc.yml
   when:
   - inventory_hostname in groups.clc
   tags:
   - initialization
 
-- include: init-java_fe.yml
+- name: Iniit JAVA compoents
+  include: init-java_fe.yml
   when:
   - inventory_hostname in groups.java_fe
+  tags:
+  - initialization
+
+- name: Init UFS
+  include: init-sc.yml
+  when:
+  - inventory_hostname in groups.ufs
+  tags:
+  - initialization
+
+- include: init-sc.yml
+  when:
+  - inventory_hostname in groups.sc
   tags:
   - initialization
 

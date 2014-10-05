@@ -1,27 +1,29 @@
 ################################################################################
 #
-# JAVA Front-Ends
+#
 #
 
-- name: Set JAVA IFACE | No VLAN
+- name: Set JAVA IFACE | UFS |No VLAN
   set_fact: java_iface="{{ 'ansible_' + hostvars[item]['vnet_java'] }}"
   with_items:
-  - "{{ groups.java_fe }}"
+  - "{{ groups.ufs }}"
   when:
   - inventory_hostname == "{{ item }}"
-  - not inventory_hostname in groups.sc
+  - inventory_hostname in groups.ufs
+  - not inventory_hostname in groups.java_fe
   - not use_vlans
   tags:
   - initialization
 
-- name: Set JAVA IFACE | VLAN
+- name: Set JAVA IFACE | UFS | VLAN
   set_fact: java_iface="{{ 'ansible_' + "%s.%d"|format(hostvars[item]['vnet_java'], hostvars[item]['vlan_tag']) }}"
   with_items:
-  - "{{ groups.java_fe }}"
+  - "{{ groups.ufs }}"
   when:
   - use_vlans
   - inventory_hostname == "{{ item }}"
-  - not inventory_hostname in groups.sc
+  - inventory_hostname in groups.java_fe
+  - not inventory_hostname in groups.java_fe
   tags:
   - initialization
 

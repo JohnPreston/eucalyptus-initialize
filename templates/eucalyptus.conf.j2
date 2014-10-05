@@ -233,7 +233,7 @@ VNET_PUBINTERFACE="{{ hostvars[inventory_hostname]['vnet_public'] }}"
 {% endif %}
 {% elif networking_mode == "EDGE" %}
 {% if inventory_hostname in groups['nc'] %}
-VNET_PUBINTERFACE="{{ hostvars[inventory_hostname]['vnet_private'] }}"
+VNET_PUBINTERFACE="{{ hostvars[inventory_hostname]['vnet_public'] }}"
 {% elif inventory_hostname in groups['cc'] %}
 VNET_PUBINTERFACE="{{ hostvars[inventory_hostname]['vnet_private'] }}"
 {% endif %}

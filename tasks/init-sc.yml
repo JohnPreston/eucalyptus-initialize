@@ -1,32 +1,26 @@
 ################################################################################
 #
-# JAVA Front-Ends
+# Set JAVA IFACE for SC
 #
-
-- name: Set JAVA IFACE | No VLAN
+- name: Set JAVA IFACE | SC | NOVLAN
   set_fact: java_iface="{{ 'ansible_' + hostvars[item]['vnet_java'] }}"
   with_items:
-  - "{{ groups.java_fe }}"
+  - "{{ groups.sc }}"
   when:
-  - inventory_hostname == "{{ item }}"
-  - not inventory_hostname in groups.sc
   - not use_vlans
+  - inventory_hostname in groups.sc
+  - not inventory_hostname in groups.java_fe
+  - inventory_hostname == "{{ item }}"
   tags:
   - initialization
 
-- name: Set JAVA IFACE | VLAN
+- name: Set JAVA IFACE | SC | VLAN
   set_fact: java_iface="{{ 'ansible_' + "%s.%d"|format(hostvars[item]['vnet_java'], hostvars[item]['vlan_tag']) }}"
   with_items:
-  - "{{ groups.java_fe }}"
+  - "{{ groups.sc }}"
   when:
-  - use_vlans
   - inventory_hostname == "{{ item }}"
-  - not inventory_hostname in groups.sc
+  - use_vlans
+  - inventory_hostname in groups.sc
   tags:
   - initialization
-
-- name: Authorize CLC SSH Key
-  authorized_key: user=root key="{{ lookup('file', '/var/tmp/clc-pub-key') }}"
-  tags:
-  - initialization
-  - clc_keys
