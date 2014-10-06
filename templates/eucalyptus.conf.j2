@@ -10,7 +10,7 @@ EUCA_USER="eucalyptus"
 
 # Extra options to pass to the eucalyptus-cloud process, such as log
 # levels, heap size, or other JVM flags.
-{% if inventory_hostname in groups['java_fe'] %}
+{% if 'java_iface' in hostvars[inventory_hostname] %}
 CLOUD_OPTS="--bind-addr={{ hostvars[inventory_hostname][hostvars[inventory_hostname]['java_iface']]['ipv4']['address'] }}"
 {% else %}
 CLOUD_OPTS=""
