@@ -2,7 +2,7 @@
 galaxy_info:
   author: John Mille
   description: Initialize all Eucalyptus components to get ready for configuration and registration
-  company: Eucalyptus
+  company: JOHN MILLE
   min_ansible_version: 1.6
   platforms:
   - name: RHEL
